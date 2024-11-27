@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+    <div class="container">
+        <header style="margin-top: 0px; " id="header">
+            <h1 style="opacity: 0%;">
+                <Table> TRIPLY SEARCH</Table>
+            </h1>
+            <h3 style="opacity: 0%;">Search Results for "{{ query }}" using {{ algorithm|capitalize }} Similarity</h3>
+        </header>
+
+        <h1
+            style=" margin-top: -150px; z-index: 1000; position: relative;  color: white;  font-family: 'Muli', Arial, sans-serif;">
+            TRIPLY SEARCH</h1>
+        <P
+            style="margin-top: -25px ;margin-left: 350px; z-index: 1000; position: relative;  color: white;  font-family: 'Muli', Arial, sans-serif;">
+            Temukan destinasi wisata favorit Anda di kepulauan Indonesia di sini. </P>
+        <img style="width: 250px;height:250px;margin-top: -142px ;margin-left: -30px; z-index: 1000; position: relative;  color: #333;  font-family: 'Muli', Arial, sans-serif;"
+            src="https://pbs.twimg.com/media/GdOkZPYasAAkyxI?format=png&name=small" />\
+        <a href="/" class="button"
+            style="text-decoration: none; color: white; display: inline-flex; align-items: center;">
+            <span class="material-symbols-outlined"
+                style="font-size: 48px; color: white; transform: translate(850px,-125px);z-index: 1000;">home</span>
+        </a>
+
+
+        <section class="search-box" style="z-index: 1000; position: relative; margin-top: -40px; margin-bottom: 20px;">
+            <form action="{{ url_for('search_results') }}" method="POST">
+                <input style="width: 870px;" type="text" name="query" placeholder="Cari aktivitas atau destinasi"
+                    value="{{ query }}" required>
+                <select name="algorithm">
+                    <option value="jaccard" {% if algorithm=='jaccard' %}selected{% endif %}>Jaccard Similarity</option>
+                    <option value="cosine" {% if algorithm=='cosine' %}selected{% endif %}>Cosine Similarity</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <section class="results-container" style="height: 1200px;">
+            <div class="results-grid">
+                {% for result in results %}
+                <div class="result-item" style="blur: 70%; background-color:  #dcdcdc;">
+                    <div class="result-image">
+                        <img src="{{ result['image_url'] }}" alt="{{ result['title'] }}">
+                    </div>
+                    <div class="result-info">
+                        <h2><a href="{{ url_for('content', content_id=result['content_id']) }}">{{ result['title']
+                                }}</a></h2>
+                        <p><strong>Date:</strong> {{ result['date'] }}</p>
+                        <p><strong>Similarity Score:</strong> {{ result['similarity']|round(4) }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="pagination-container">
+            <div class="pagination">
+                {% if current_page > 1 %}
+                <a href="{{ url_for('search_results', query=query, page=current_page - 1) }}" class="prev">Previous</a>
+                {% endif %}
+
+                {% for page_num in page_range %}
+                <a href="{{ url_for('search_results', query=query, page=page_num) }}"
+                    class="{{ 'active' if page_num == current_page else '' }}">
+                    {{ page_num }}
+                </a>
+                {% endfor %}
+
+                {% if current_page < total_pages %} <a
+                    href="{{ url_for('search_results', query=query, page=current_page + 1) }}" class="next">Next</a>
+                    {% endif %}
+            </div>
+        </section>
+    </div>
+    <script>
+        const images = [
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/sumatra/north-sumatra/lake-toba/toba-header.jpg',
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/revision-2019/all-revision-destination/likupangH.jpg',
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/revision-2019/all-revision-destination/rajaampatH.jpg',
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/java/central-java/headerborobudur.jpg',
+            'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMqQAowAjWnTMlp75GWQ_7v-kfrJpDq5yySid0SvuA-2ntP3sgraba2YAz19EtWKlybzI1goY0AU5mIgSRO7Swtun8TRFWZgkO4wbLKCAvA-6-w4McydZ-JCbxXjEQ0amubfsg2kMCkfhV/s0/gunung-bromo.jpg'
+        ];
+
+        let currentIndex = 0;
+        const header = document.getElementById('header');
+
+        function changeBackground() {
+            header.style.backgroundImage = `url(${images[currentIndex]})`;
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+        changeBackground();
+        setInterval(changeBackground, 5000);
+
+    </script>
+    <script>
+        function goBackToIndex() {
+            window.location.href = '/';
+        }
+    </script>
+    <script>
+        function goToHomePage() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+
+</html>

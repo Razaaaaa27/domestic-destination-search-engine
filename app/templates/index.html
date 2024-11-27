@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Jaro:opsz@6..72&display=swap" rel="stylesheet">
+    
+</head>
+
+<body>
+    <div class="container">
+        <header id="header">
+            <h1 style="opacity: 0%;">TRIPLY SEARCH</h1>
+            <p style="opacity: 0%;">Temukan destinasi wisata favorit Anda di kepulauan Indonesia di sini. Nikmati
+                bersama kami!</p>
+        </header>
+
+        <div class="inner-headings" style="margin-top: -19px; margin-left: 750px; font-family: jaro-style; font-weight: bold;">
+            <span style="font-size: 32px;">
+              DESTINASI WISATA <br />
+              TEMPAT BERSEJARAH <br />
+              EVENT KEBUDAYAAN <br />
+            </span>
+          </div>
+
+          
+
+
+        <h1 style=" text-align: left; color: white;font-family: 'Muli', Arial, sans-serif; margin-left: 20px; margin-top: -45px;">Jelajahi
+            wisata terpopuler indonesia</h1>
+        <section class="search-box" style="z-index: 1000; position: relative; margin-top: -25px; ">
+            <form action="{{ url_for('search_results') }}" method="POST">
+                <input style="width: 870px;" type="text" name="query" placeholder="Cari aktivitas atau destinasi"
+                    required>
+                <select name="algorithm">
+                    <option value="jaccard">Jaccard Similarity</option>
+                    <option value="cosine">Cosine Similarity</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <img style="opacity: 100%; margin-top: -80px; margin-left: -20px;"
+            alt="A beautiful tropical resort with overwater bungalows and clear blue water" height="600"
+            src="https://pbs.twimg.com/media/GdOMXVbbYAAx63M?format=png&name=small" width="900" />
+
+        <div class="container2" style="margin-top: -500px;">
+            <div class="content2">
+                <div class="image-container2">
+                    <img style="opacity: 0%;"
+                        alt="A beautiful tropical resort with overwater bungalows and clear blue water" height="400"
+                        src="https://pbs.twimg.com/media/GdNXdPKbIAA7zVs?format=png&name=small" width="600" />
+                </div>
+                <div class="text-container2" style="z-index:10 ;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-container2" style="z-index:10 ;">
+        <h1 style="margin-top: -400px; margin-left: 400px;">Aneka Tempat Wisata</h1>
+        <p style="text-indent: 700px;">Indahnya alam Indonesia. Cari beragam spot wisata, tempat bersejarah </p>
+        <p style="text-indent: 700px;">akomodas dan pengalaman liburan tak terlupakan di sini!</p>
+    </div>
+
+    <h1
+        style="margin-top: -550px; z-index: 1000; position: relative;  color: white;  font-family: 'Muli', Arial, sans-serif;">
+        TRIPLY SEARCH</h1>
+    <P
+        style="margin-top: -30px ;margin-left: 480px; z-index: 1000; position: relative;  color: white;  font-family: 'Muli', Arial, sans-serif;">
+        Temukan destinasi wisata favorit Anda di kepulauan Indonesia di sini. </P>
+    <img style="width: 250px;height:250px;margin-top: -142px ;margin-left: 100px; z-index: 1000; position: relative;  color: #333;  font-family: 'Muli', Arial, sans-serif;"
+        src="https://pbs.twimg.com/media/GdOkZPYasAAkyxI?format=png&name=small" />
+
+      
+         
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+  const message = document.querySelector('.message');
+
+  // Add click interaction to words
+  const words = document.querySelectorAll('.word1, .word2, .word3, .word4');
+  words.forEach(word => {
+    word.addEventListener('click', () => {
+      word.style.transform = 'scale(1.1)';
+      setTimeout(() => {
+        word.style.transform = 'scale(1)';
+      }, 200);
+    });
+  });
+
+  // Easter egg: Double click to add sparkle effect
+  message.addEventListener('dblclick', () => {
+    createSparkle(message);
+  });
+
+  function createSparkle(element) {
+    const sparkle = document.createElement('span');
+    sparkle.textContent = '✨';
+    sparkle.style.position = 'absolute';
+    sparkle.style.left = Math.random() * 100 + '%';
+    sparkle.style.top = Math.random() * 100 + '%';
+    sparkle.style.animation = 'sparkle 1s forwards';
+    element.appendChild(sparkle);
+
+    setTimeout(() => {
+      sparkle.remove();
+    }, 1000);
+  }
+});
+    </script>
+    <script>
+        const images = [
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/sumatra/north-sumatra/lake-toba/toba-header.jpg',
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/revision-2019/all-revision-destination/likupangH.jpg',
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/revision-2019/all-revision-destination/rajaampatH.jpg',
+            'https://www.indonesia.travel/content/dam/indtravelrevamp/en/destinations/java/central-java/headerborobudur.jpg',
+            'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMqQAowAjWnTMlp75GWQ_7v-kfrJpDq5yySid0SvuA-2ntP3sgraba2YAz19EtWKlybzI1goY0AU5mIgSRO7Swtun8TRFWZgkO4wbLKCAvA-6-w4McydZ-JCbxXjEQ0amubfsg2kMCkfhV/s0/gunung-bromo.jpg'
+        ];
+
+        let currentIndex = 0;
+        const header = document.getElementById('header');
+
+        function changeBackground() {
+            header.style.backgroundImage = `url(${images[currentIndex]})`;
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+        changeBackground();
+        setInterval(changeBackground, 5000);
+    </script>
+
+    
+</body>
+</html>
