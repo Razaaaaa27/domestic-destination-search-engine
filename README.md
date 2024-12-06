@@ -86,6 +86,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contact
 
 For questions or further details, feel free to contact me at: 
-- Email: [your.email@example.com](mailto:your.email@example.com)
-- GitHub: [https://github.com/yourusername](https://github.com/yourusername)
+- Email: [raza.a22@mhs.usk.ac.id@gmail.com](mailto:your.email@example.com)
+- GitHub: [https://github.com/razaaadzani](https://github.com/yourusername)
 
