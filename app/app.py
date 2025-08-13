@@ -2,9 +2,15 @@ from flask import Flask, render_template, request
 import re
 import csv
 import math
+import os
 from collections import Counter, defaultdict
 
 app = Flask(__name__)
+
+# Tentukan path file berdasarkan lokasi app.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Lokasi folder app/
+INDEX_PATH = os.path.join(BASE_DIR, '..', 'inverted_index.txt')
+COMBINED_DATA_PATH = os.path.join(BASE_DIR, '..', 'merged_combined_data.csv')
 
 # Fungsi untuk memuat inverted index dari file
 def load_inverted_index(file_path):
@@ -18,9 +24,9 @@ def load_inverted_index(file_path):
     return inverted_index
 
 # Fungsi untuk memuat data dokumen dari file CSV
-def load_combined_data():
+def load_combined_data(file_path):
     combined_data = {}
-    with open('merged_combined_data.csv', 'r', encoding='utf-8') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
             doc_id = int(row['Doc ID'])
@@ -59,16 +65,14 @@ def calculate_cosine_similarity(query_words, doc_words):
 def search_with_algorithm(query, inverted_index, combined_data, algorithm='jaccard', target_category=None):
     query_words = query.lower().split()
     
-    # Hitung Similarity untuk setiap dokumen
     results = []
     for doc_id, doc_words_freq in inverted_index.items():
         doc_data = combined_data.get(doc_id, {})
         
-        # Filter berdasarkan kategori jika target_category diberikan
+        # Filter berdasarkan kategori jika ada
         if target_category and doc_data.get('category', '').lower() != target_category.lower():
             continue
         
-        # Hitung similarity
         if algorithm == 'jaccard':
             doc_words = set(doc_words_freq.keys())
             query_set = set(query_words)
@@ -91,8 +95,8 @@ def search_with_algorithm(query, inverted_index, combined_data, algorithm='jacca
     return results
 
 # Muat data
-inverted_index = load_inverted_index('inverted_index.txt')
-combined_data = load_combined_data()
+inverted_index = load_inverted_index(INDEX_PATH)
+combined_data = load_combined_data(COMBINED_DATA_PATH)
 
 @app.route('/')
 def index():
@@ -102,25 +106,31 @@ def index():
 def search_results():
     query = request.form.get('query') if request.method == 'POST' else request.args.get('query')
     category = request.form.get('category') if request.method == 'POST' else request.args.get('category', None)
-    algorithm = request.form.get('algorithm', 'jaccard')  # Ambil pilihan algoritma dari form
+    algorithm = request.form.get('algorithm', 'jaccard')
     
-    # Panggil fungsi pencarian dengan filter kategori dan algoritma yang dipilih
     results = search_with_algorithm(query, inverted_index, combined_data, algorithm=algorithm, target_category=category)
     
-    # Pagination setup
-    results_per_page = 10  # Jumlah hasil per halaman
+    results_per_page = 10
     page = request.args.get('page', 1, type=int)
     total_results = len(results)
     total_pages = (total_results // results_per_page) + (1 if total_results % results_per_page > 0 else 0)
     
-    # Pembagian halaman
     start = (page - 1) * results_per_page
     end = start + results_per_page
     paginated_results = results[start:end]
     
     page_range = range(max(1, page - 3), min(total_pages, page + 2) + 1)
 
-    return render_template('result.html', query=query, results=paginated_results, total_pages=total_pages, current_page=page, page_range=page_range, category=category, algorithm=algorithm)
+    return render_template(
+        'result.html',
+        query=query,
+        results=paginated_results,
+        total_pages=total_pages,
+        current_page=page,
+        page_range=page_range,
+        category=category,
+        algorithm=algorithm
+    )
 
 @app.route('/content/<int:content_id>')
 def content(content_id):
